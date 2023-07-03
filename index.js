@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express(); //App init
+const sequelize = require('./db/connection')
 
 const port = 3000;
 
