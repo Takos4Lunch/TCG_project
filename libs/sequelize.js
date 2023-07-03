@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 /**
  * RECORDATORIO: cambiar estas variables a variables de ambiente
+ * RECORDATORIO: importar modelos para exportación
  */
 
 const sequelize = new Sequelize('neo_bank','rafael','123456', {
