@@ -12,6 +12,6 @@ const sequelize = new Sequelize('neo_bank','rafael','123456', {
 })
 
 assocModels(sequelize);
+sequelize.sync();
 
-
-module.exports = {sequelize};
+module.exports = sequelize;

@@ -1,7 +1,18 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../../libs/sequelize');
 
-class User extends Model{}
+const USER_TABLE = 'users'
+
+class User extends Model{
+    static config(sequelize) {
+        return {
+          sequelize,
+          tableName: USER_TABLE,
+          modelName: 'User',
+          timestamps: false
+        }
+    }
+}
 
 const userSchema = {
     id: {

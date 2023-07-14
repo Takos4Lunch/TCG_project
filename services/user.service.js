@@ -1,12 +1,12 @@
-const {models} = require('../libs/sequelize');
-const bcrypt = require('bcrypt');
+const { models } = require('../libs/sequelize');
+const bcrypt = require('bcryptjs');
 
 class UserService{
     constructor(){}
 
     async create(data){
         //password encryption
-        const hash = await bcrypt.hash(data.password, 10);
+        const hash = bcrypt.hashSync(data.password, 10);
         const newUser = await models.User.create({
             ...data,
             password: hash //Replacing original password with encrypted password
@@ -17,7 +17,8 @@ class UserService{
     }
 
     async find(){
-        results = await models.User.findAll();
+        console.log(models);
+        const results = await models.User.findAll();
         return results;
     }
 
@@ -29,15 +30,22 @@ class UserService{
         return results;
     }
 
-    async findOne(){
-
+    async findOne(id){
+        const results = await models.User.findByPk(id);
+        return results;
     }
 
-    async update(){
-
+    async update(id, changes){
+        const user = await this.findOne(id);
+        const results = await user.update(changes);
+        return results;
     }
 
-    async delete(){
-
+    async delete(id){
+        const user = await this.findOne(id);
+        await user.destroy();
+        return { id };
     }
 }
+
+module.exports = UserService;
