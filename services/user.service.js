@@ -37,6 +37,8 @@ class UserService{
 
     async update(id, changes){
         const user = await this.findOne(id);
+        //This will need to be addressed in the future
+        delete changes?.password;
         const results = await user.update(changes);
         return results;
     }

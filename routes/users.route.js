@@ -18,7 +18,6 @@ router.get('/', async(req, res, next) => {
 router.post('/', async(req, res, next) => {
     try{
         const body = req.body;
-        console.log(body)
         const user = await service.create(body);
         return res.json(user);
     } catch(err){
@@ -26,12 +25,25 @@ router.post('/', async(req, res, next) => {
     }
 })
 
-router.patch('/', async(req, res) => {
-
+router.patch('/:id', async(req, res) => {
+    try{
+        const {id} = req.params;
+        const body = req.body;
+        const changes = await service.update(id, body);
+        res.json(changes)
+    }catch(err){
+        next(err)
+    }
 })
 
-router.delete('/', async(req, res) => {
-
+router.delete('/:id', async(req, res) => {
+    try{
+        const {id} = req.params;
+        const result = await service.delete(id)
+        res.json(result)
+    }catch(err){
+        next(err)
+    }
 })
 
 module.exports = router;
