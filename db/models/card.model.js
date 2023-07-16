@@ -12,6 +12,11 @@ class Card extends Model{
           timestamps: false
         }
     }
+
+    static assoc(models){
+        //Take into consideration: Sequelize creates foreign keys based on these methods
+        this.hasMany(models.CardInstance)
+    }
 }
 
 const cardSchema = {
@@ -35,6 +40,10 @@ const cardSchema = {
     cardLevel: {
         type: DataTypes.STRING,
         allowNull: false 
+    },
+    cardImgUrl:{
+        type: DataTypes.STRING,
+        allowNull: true //Because you never know when an artists is going to have a creative block, gotta help our guys
     }
 }
 

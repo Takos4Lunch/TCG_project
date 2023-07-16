@@ -12,6 +12,10 @@ class User extends Model{
           timestamps: false
         }
     }
+
+    static assoc(models){
+        this.hasMany(models.CardInstance);
+    }
 }
 
 const userSchema = {
