@@ -1,42 +1,41 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../../libs/sequelize');
 
-const USER_TABLE = 'users'
+const USER_TABLE = 'cards'
 
-class User extends Model{
+class Card extends Model{
     static config(sequelize) {
         return {
           sequelize,
           tableName: USER_TABLE,
-          modelName: 'User',
+          modelName: 'Card',
           timestamps: false
         }
     }
 }
 
-const userSchema = {
+const cardSchema = {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    userName: {
+    cardName: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    password: {
+    cardRarity: {
         type: DataTypes.STRING,
         allowNull: false 
     },
-    email: {
+    cardType: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false 
+    },
+    cardLevel: {
+        type: DataTypes.STRING,
+        allowNull: false 
     }
 }
 
-/**
- * we need to update the user model to add a wallet
- * and materials field
- */
-
-module.exports = {User, userSchema}
+module.exports = {Card, cardSchema}
