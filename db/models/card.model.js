@@ -14,7 +14,6 @@ class Card extends Model{
     }
 
     static assoc(models){
-        //Take into consideration: Sequelize creates foreign keys based on these methods
         this.hasMany(models.CardInstance)
     }
 }
