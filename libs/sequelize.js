@@ -13,6 +13,12 @@ const sequelize = new Sequelize(config.dbname,config.user,config.password, {
 })
 
 assocModels(sequelize);
-sequelize.sync();
+/**
+ * IMPORTANT:
+ * {force: true} deletes ALL records if a change is made
+ * implementing a way to migrate this data is, therefore, necessary
+ * this parameter will only be used temporarily
+ */
+sequelize.sync(/*{force: true}*/);
 
 module.exports = sequelize;
