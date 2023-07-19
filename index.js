@@ -9,6 +9,8 @@ const port = 3000;
 
 app.use(express.json());
 
+require('./utils/auth')
+
 routerApi(app);
 app.get('/', checkApiKey , (req, res) => {
     res.send('Welcome');
