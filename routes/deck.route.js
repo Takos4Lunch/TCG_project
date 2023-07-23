@@ -1,15 +1,15 @@
 const express = require('express');
 
-const cardService = require('../services/card.service')
+const deckService = require('../services/deck.service')
 
 const router = express.Router();
 
-const service = new cardService()
+const service = new deckService()
 
 router.get('/', async (req, res, next) => {
     try {
-        const cards = await service.find();
-        res.json(cards)
+        const decks = await service.find();
+        res.json(decks)
     } catch (error) {
         next(error);
     }
@@ -17,8 +17,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
     try {
-        const card = await service.findOne(req.params.id);
-        res.json(card);
+        const deck = await service.findOne(req.params.id);
+        res.json(deck);
     } catch (error) {
         next(error);
     }
@@ -27,8 +27,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const body = req.body;
-        const card = await service.create(body);
-        return res.json(card)
+        const deck = await service.create(body);
+        return res.json(deck)
     } catch (error) {
         next(error)
     }

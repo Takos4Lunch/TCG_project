@@ -22,8 +22,8 @@ class DeckService {
 
     async update(id, changes){
         const deck = await this.findOne(id);
-        const changes = await deck.update(changes);
-        return changes;
+        const results = await deck.update(changes);
+        return results;
     }
 
     async delete(id){
@@ -32,3 +32,5 @@ class DeckService {
         return { id };
     }
 }
+
+module.exports = DeckService;

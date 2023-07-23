@@ -1,15 +1,15 @@
 const express = require('express');
 
-const cardService = require('../services/card.service')
+const cardInstanceService = require('../services/cardInstance.service')
 
 const router = express.Router();
 
-const service = new cardService()
+const service = new cardInstanceService()
 
 router.get('/', async (req, res, next) => {
     try {
-        const cards = await service.find();
-        res.json(cards)
+        const cardInstances = await service.find();
+        res.json(cardInstances)
     } catch (error) {
         next(error);
     }
@@ -17,8 +17,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
     try {
-        const card = await service.findOne(req.params.id);
-        res.json(card);
+        const cardInstance = await service.findOne(req.params.id);
+        res.json(cardInstance);
     } catch (error) {
         next(error);
     }
@@ -27,8 +27,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const body = req.body;
-        const card = await service.create(body);
-        return res.json(card)
+        const cardInstance = await service.create(body);
+        return res.json(cardInstance)
     } catch (error) {
         next(error)
     }

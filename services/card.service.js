@@ -36,8 +36,8 @@ class cardService{
 
     async update(id, changes){
         const card = await this.findOne(id);
-        const changes = await card.update(changes);
-        return changes;
+        const results = await card.update(changes);
+        return results;
     }
 
     async delete(id){
