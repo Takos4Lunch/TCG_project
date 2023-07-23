@@ -25,6 +25,10 @@ const userSchema = {
         autoIncrement: true,
         primaryKey: true
     },
+    role: {
+        type: DataTypes.STRING,
+        defaultValue: "user"
+    },
     userName: {
         type: DataTypes.STRING,
         allowNull: false

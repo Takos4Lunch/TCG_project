@@ -1,12 +1,13 @@
 const express = require('express');
-
-const cardService = require('../services/card.service')
+const passport = require('passport');
+const cardService = require('../services/card.service');
+const { checkAdminRole } = require('../middlewares/auth.handler');
 
 const router = express.Router();
 
 const service = new cardService()
 
-router.get('/', async (req, res, next) => {
+router.get('/', passport.authenticate('jwt', {session: false}), checkAdminRole , async (req, res, next) => {
     try {
         const cards = await service.find();
         res.json(cards)

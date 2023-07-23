@@ -13,6 +13,7 @@ class UserService{
         })
         //Then we delete the password from its data values
         delete newUser.dataValues.password;
+        delete newUser.dataValues.role;
         return newUser;
     }
 
