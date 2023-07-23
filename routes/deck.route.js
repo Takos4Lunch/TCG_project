@@ -1,12 +1,15 @@
 const express = require('express');
-
+const passport = require('passport');
+const { checkRoles } = require('../middlewares/auth.handler');
 const deckService = require('../services/deck.service')
 
 const router = express.Router();
 
 const service = new deckService()
 
-router.get('/', async (req, res, next) => {
+router.get('/', 
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+async (req, res, next) => {
     try {
         const decks = await service.find();
         res.json(decks)
@@ -15,7 +18,9 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', 
+passport.authenticate('jwt', {session: false}), checkRoles('admin', 'user') ,
+async (req, res, next) => {
     try {
         const deck = await service.findOne(req.params.id);
         res.json(deck);
@@ -24,7 +29,9 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', 
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+async (req, res, next) => {
     try {
         const body = req.body;
         const deck = await service.create(body);
@@ -34,7 +41,9 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', 
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+async (req, res, next) => {
     try {
         const {id} = req.params;
         const body = req.body;
@@ -45,7 +54,9 @@ router.patch('/:id', async (req, res, next) => {
     }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', 
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+async (req, res, next) => {
     try {
         const {id} = req.params;
         const result = await service.delete(id);
