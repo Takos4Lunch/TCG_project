@@ -29,7 +29,7 @@ const userSchema = {
         type: DataTypes.STRING,
         defaultValue: "user"
     },
-    userName: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -43,7 +43,7 @@ const userSchema = {
     },
     materials: {
         type: DataTypes.DOUBLE,
-        allowNull: false
+        defaultValue: 0
     }
 }
 
