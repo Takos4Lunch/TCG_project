@@ -2,6 +2,8 @@ const express = require('express');
 const passport = require('passport');
 const cardService = require('../services/card.service');
 const { checkRoles } = require('../middlewares/auth.handler');
+const validatorHandler = require('../middlewares/validator.handler');
+const { getCardSchema, createCardSchema, updateCardSchema } = require('../schemas/card.schema')
 
 const router = express.Router();
 
@@ -20,6 +22,7 @@ async (req, res, next) => {
 
 router.get('/:id', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
+validatorHandler(getCardSchema, 'params'),
 async (req, res, next) => {
     try {
         const card = await service.findOne(req.params.id);
@@ -31,6 +34,7 @@ async (req, res, next) => {
 
 router.post('/', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
+validatorHandler(createCardSchema, 'body'),
 async (req, res, next) => {
     try {
         const body = req.body;
@@ -43,6 +47,8 @@ async (req, res, next) => {
 
 router.patch('/:id', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
+validatorHandler(getCardSchema, 'params'),
+validatorHandler(updateCardSchema, 'body'),
 async (req, res, next) => {
     try {
         const {id} = req.params;

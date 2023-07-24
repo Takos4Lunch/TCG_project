@@ -42,7 +42,10 @@ async(req, res, next) => {
     }
 })
 
-router.patch('/:id', passport.authenticate('jwt', {session:false}), checkRoles('admin', 'user'), async(req, res) => {
+router.patch('/:id', passport.authenticate('jwt', {session:false}), checkRoles('admin', 'user'), 
+validatorHandler(getUserSchema,'params'),
+validatorHandler(updateUserSchema, 'body'),
+async(req, res) => {
     try{
         const {id} = req.params;
         const body = req.body;

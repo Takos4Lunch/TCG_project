@@ -1,14 +1,16 @@
 const express = require('express');
 const passport = require('passport');
 const { checkRoles } = require('../middlewares/auth.handler');
-const deckService = require('../services/deck.service')
+const deckService = require('../services/deck.service');
+const validatorHandler = require('../middlewares/validator.handler');
+const { createDeckSchema, getDeckSchema, updateDeckSchema } = require('../schemas/deck.schema')
 
 const router = express.Router();
 
 const service = new deckService()
 
 router.get('/', 
-passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user'),
 async (req, res, next) => {
     try {
         const decks = await service.find();
@@ -20,6 +22,7 @@ async (req, res, next) => {
 
 router.get('/:id', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin', 'user') ,
+validatorHandler(getDeckSchema, 'params'),
 async (req, res, next) => {
     try {
         const deck = await service.findOne(req.params.id);
@@ -31,6 +34,7 @@ async (req, res, next) => {
 
 router.post('/', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+validatorHandler(createDeckSchema, 'body'),
 async (req, res, next) => {
     try {
         const body = req.body;
@@ -43,6 +47,8 @@ async (req, res, next) => {
 
 router.patch('/:id', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+validatorHandler(getDeckSchema, 'params'),
+validatorHandler(updateDeckSchema, 'body'),
 async (req, res, next) => {
     try {
         const {id} = req.params;
