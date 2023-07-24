@@ -1,4 +1,5 @@
 const { models } = require('../libs/sequelize')
+const Sequelize = require('sequelize')
 
 class cardService{
     constructor(){}
@@ -18,7 +19,7 @@ class cardService{
 
     async create(data){
         const newCard = await models.Card.create({
-            data
+            ...data
         })
         return newCard;
     }
@@ -26,6 +27,11 @@ class cardService{
     async find(){
         //find all cards
         const results = await models.Card.findAll();
+        return results;
+    }
+
+    async findRandom(amount){
+        const results = await models.Card.findAll({ order: Sequelize.literal('random()'), limit: amount, raw: true });
         return results;
     }
 

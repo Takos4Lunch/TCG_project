@@ -1,12 +1,13 @@
 const express = require('express');
 const passport = require('passport');
 const cardService = require('../services/card.service');
+const cardInstanceService = require('../services/cardInstance.service');
 const { checkRoles } = require('../middlewares/auth.handler');
 const validatorHandler = require('../middlewares/validator.handler');
 const { getCardSchema, createCardSchema, updateCardSchema } = require('../schemas/card.schema')
 
 const router = express.Router();
-
+const cInstService = new cardInstanceService();
 const service = new cardService()
 
 router.get('/', 
@@ -18,6 +19,31 @@ async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+})
+
+router.get('/buy/',
+passport.authenticate('jwt', {session: false}), 
+checkRoles('admin','user') ,
+async (req, res, next) => {
+    try {
+        /**
+         * Select 5 cards at random from the DB
+         * then grant an instance per card to the user
+         */
+        const cards = await service.findRandom(5);
+        cards.forEach(card => {
+            cInstService.create({
+                isShiny: false,
+                UserId: req.user.sub,
+                CardId: card.id
+            })
+        });
+        
+        res.json(cards);
+    } catch (error) {
+        
+    }
+    
 })
 
 router.get('/:id', 
@@ -38,6 +64,7 @@ validatorHandler(createCardSchema, 'body'),
 async (req, res, next) => {
     try {
         const body = req.body;
+        console.log(body);
         const card = await service.create(body);
         return res.json(card)
     } catch (error) {

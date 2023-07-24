@@ -5,7 +5,7 @@ class cardInstanceService{
 
     async create(data){
         const newInstance = await models.CardInstance.create({
-            data
+            ...data
         })
         return newInstance;
     }
