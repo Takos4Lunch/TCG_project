@@ -11,7 +11,7 @@ const router = express.Router();
 const service = new deckService()
 const cInstService = new cardInstanceService();
 
-router.get('/', //Decks should bring both the deck and their associated cards
+router.get('/', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin'),
 async (req, res, next) => {
     try {
