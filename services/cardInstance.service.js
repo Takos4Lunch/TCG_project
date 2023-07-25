@@ -20,6 +20,16 @@ class cardInstanceService{
         return results;
     }
 
+    async findAllByUser(id){
+        //REMEMBER TO REFERENCE THE ACTUAL TABLE NAME
+        const results = await models.CardInstance.findAll({
+            where: {
+                '$CardInstance.UserId$' : id
+            }
+        });
+        return results;
+    }
+
     async update(id, changes){
         const cardInstance = await this.findOne(id);
         const results = await cardInstance.patch(changes);

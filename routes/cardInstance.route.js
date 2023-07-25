@@ -7,8 +7,8 @@ const router = express.Router();
 
 const service = new cardInstanceService()
 
-router.get('/', 
-passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+router.get('/', //Returns ALL instances, not taking the user into account
+passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
 async (req, res, next) => {
     try {
         const cardInstances = await service.find();
@@ -18,8 +18,19 @@ async (req, res, next) => {
     }
 })
 
+router.get('/inventory/',
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user'),
+async (req, res, next) => {
+    try {
+        const cardInstances = await service.findAllByUser(req.user.sub);
+        res.json(cardInstances);
+    } catch (error) {
+        next(error);
+    }
+})
+
 router.get('/:id',
-passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
+passport.authenticate('jwt', {session: false}), checkRoles('admin') , //Returns ANY instance
 async (req, res, next) => {
     try {
         const cardInstance = await service.findOne(req.params.id);

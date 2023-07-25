@@ -20,6 +20,15 @@ class DeckService {
         return results;
     }
 
+    async findOneByUser(id){
+        const results = await models.Deck.findOne({
+            where: {
+                '$Deck.UserId$': id
+            }
+        })
+        return results;
+    }
+
     async update(id, changes){
         const deck = await this.findOne(id);
         const results = await deck.update(changes);
