@@ -5,7 +5,7 @@ const id = Joi.number();
 const currentCards = Joi.number().default(0);
 
 const updateDeckSchema = Joi.object({
-    coverImgUrl,
+    coverImgUrl: coverImgUrl.optional(true).default(''),
     currentCards,
     id: id.required()
 })
@@ -15,8 +15,8 @@ const getDeckSchema = Joi.object({
 })
 
 const createDeckSchema = Joi.object({
-    coverImgUrl: coverImgUrl.required(),
-    currentCards
+    coverImgUrl: coverImgUrl.optional(true).default(''),
+    currentCards,
 })
 
 module.exports = { updateDeckSchema, createDeckSchema, getDeckSchema }

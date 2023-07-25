@@ -5,7 +5,7 @@ class DeckService {
 
     async create(data){
         const deck = await models.Deck.create({
-            data
+            ...data
         }) 
         return deck;
     }
@@ -20,11 +20,22 @@ class DeckService {
         return results;
     }
 
-    async findOneByUser(id){
+    async findOneByUser(userId, deckId){
         const results = await models.Deck.findOne({
             where: {
-                '$Deck.UserId$': id
+                '$Deck.UserId$': userId,
+                '$Deck.id$': deckId
             }
+        })
+        return results;
+    }
+
+    async findAssocs(id){
+        const results = await models.Deck.findAll({
+            where: {
+                '$Deck.UserId$' : id
+            },
+            include: models.CardInstance
         })
         return results;
     }

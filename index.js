@@ -14,6 +14,7 @@ require('./utils/auth')
 routerApi(app);
 app.get('/', checkApiKey , (req, res) => {
     res.send('Welcome');
+    //Should redirect to documentation
 })
 
 app.use(logErrors);

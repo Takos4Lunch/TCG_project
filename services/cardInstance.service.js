@@ -20,6 +20,15 @@ class cardInstanceService{
         return results;
     }
 
+    async findOneAssoc(id, UserId){
+        const results = await models.CardInstance.findByPk(id,{
+            where: {
+                '$CardInstance.UserId$' : UserId
+            }
+        });
+        return results;
+    }
+
     async findAllByUser(id){
         //REMEMBER TO REFERENCE THE ACTUAL TABLE NAME
         const results = await models.CardInstance.findAll({
