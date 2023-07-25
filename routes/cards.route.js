@@ -5,6 +5,7 @@ const cardInstanceService = require('../services/cardInstance.service');
 const { checkRoles } = require('../middlewares/auth.handler');
 const validatorHandler = require('../middlewares/validator.handler');
 const { getCardSchema, createCardSchema, updateCardSchema } = require('../schemas/card.schema')
+const boom = require('@hapi/boom');
 
 const router = express.Router();
 const cInstService = new cardInstanceService();
@@ -33,7 +34,7 @@ async (req, res, next) => {
         const cards = await service.findRandom(5);
         cards.forEach(card => {
             cInstService.create({
-                isShiny: false,
+                isShiny: false, //Replace with a percentual randomizer
                 UserId: req.user.sub,
                 CardId: card.id
             })
@@ -41,7 +42,7 @@ async (req, res, next) => {
         
         res.json(cards);
     } catch (error) {
-        
+        next(error);
     }
     
 })
@@ -72,6 +73,31 @@ async (req, res, next) => {
     }
 })
 
+router.post('/craft/:id',
+passport.authenticate('jwt', {session: false}), 
+checkRoles('admin','user') ,
+async (req, res, next) => {
+    try {
+        //First, we get the card from the parameters
+        const card = await service.findOne(req.params.id);
+        //Now, we create an instance
+        if(card){ //We should check if the user has enough materials
+            //Then substract them from their account
+            const cardInst = await cInstService.create({
+                //Crafted cards are NEVER shiny
+                isShiny: false,
+                UserId: req.user.sub,
+                CardId: card.id
+            })
+            res.json(cardInst);
+        }else{
+            res.json(boom.notFound('Card does not exist'));
+        }
+    } catch (error) {
+        next(error);
+    }
+})
+
 router.patch('/:id', 
 passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
 validatorHandler(getCardSchema, 'params'),
@@ -97,6 +123,21 @@ async (req, res, next) => {
     } catch (error) {
         next(err)
     }
+})
+
+router.delete('/dismantle/:id',
+passport.authenticate('jwt', {session: false}), 
+checkRoles('admin','user') ,
+async (req, res, next) => {
+    //This will dismantle only ONE of all the instances the user has
+    //NO COPIES should be dismantled
+    try {
+        const cardInst = await cInstService.delete(req.params.id);
+        res.json(cardInst);
+    } catch (error) {
+        next(error);
+    }
+    
 })
 
 module.exports = router;
