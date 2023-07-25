@@ -101,16 +101,16 @@ passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
 async (req, res, next) => {
     //Same procedure as in addcard, but this time we remove the instance
     try {
-        const deck = await service.findOneByUser(req.params.id);
+        const deck = await service.findOneByUser(req.user.sub,req.params.id);
         const cardRemove = req.body.cards;
         cardRemove.forEach(async card => {
-            const cardInst = await cInstService.findOne(card);
+            const cardInst = await cInstService.findOneAssoc(card, req.user.sub);
             cardInst.DeckId = null;
             deck.currentCards = deck.currentCards-1;
             deck.save();
             cardInst.save();
         });
-        res.json(cardinsert);    
+        res.json(cardRemove);    
     } catch (error) {
         next(error);
     }
@@ -124,7 +124,7 @@ async (req, res, next) => {
         const result = await service.delete(id);
         res.json(result)
     } catch (error) {
-        next(err)
+        next(error)
     }
 })
 

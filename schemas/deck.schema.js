@@ -6,8 +6,7 @@ const currentCards = Joi.number().default(0);
 
 const updateDeckSchema = Joi.object({
     coverImgUrl: coverImgUrl.optional(true).default(''),
-    currentCards,
-    id: id.required()
+    currentCards: currentCards.optional(true),
 })
 
 const getDeckSchema = Joi.object({

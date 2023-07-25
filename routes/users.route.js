@@ -56,7 +56,7 @@ async(req, res) => {
     }
 })
 
-router.delete('/:id', passport.authenticate('jwt', {session:false}), checkRoles('admin', 'user'), async(req, res) => {
+router.delete('/:id', passport.authenticate('jwt', {session:false}), checkRoles('admin'), async(req, res) => {
     try{
         const {id} = req.params;
         const result = await service.delete(id)
