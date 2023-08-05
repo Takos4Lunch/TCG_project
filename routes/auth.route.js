@@ -10,7 +10,7 @@ router.post('/login', passport.authenticate('local', {session: false}) , async (
         const secret = config.secret;
         const payload = {
             sub: user.id,
-            role: user.role, //Refactor DB to include roles
+            role: user.role,
         }
         const token = jwt.sign(payload, secret)
         res.json({
