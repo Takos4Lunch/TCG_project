@@ -15,6 +15,6 @@ assocModels(sequelize);
  * implementing a way to migrate this data is, therefore, necessary
  * this parameter will only be used temporarily
  */
-sequelize.sync(/*{force: true}*/);
+//sequelize.sync(/*{force: true}*/);
 
 module.exports = sequelize;

@@ -1,5 +1,6 @@
 const { models } = require('../libs/sequelize');
 const bcrypt = require('bcryptjs');
+const boom = require('@hapi/boom');
 
 class UserService{
     constructor(){}
@@ -17,7 +18,7 @@ class UserService{
         return newUser;
     }
 
-    async find(){
+    async find(){ //Tested
         const results = await models.User.findAll();
         return results;
     }
@@ -27,20 +28,34 @@ class UserService{
             where: { email }
         });
 
-        return results;
+        if(!email){
+            return boom.badRequest('No Email Provided');
+        }else{
+            return results;
+        }
     }
 
     async findOne(id){
         const results = await models.User.findByPk(id);
-        return results;
+        if(!id){
+            return boom.badRequest('No Id Provided');
+        }else{
+            return results;
+        }
     }
 
     async update(id, changes){
-        const user = await this.findOne(id);
-        //This will need to be addressed in the future
-        delete changes?.password;
-        const results = await user.update(changes);
-        return results;
+        try{
+            const user = await this.findOne(id);
+            //Throws TypeError if the previous call to the db can't find any users
+            const results = await user.update({
+                changes
+            });
+            return results.id;
+        }catch(e){
+            //
+            return boom.badRequest('ID not provided')
+        }
     }
 
     async delete(id){
