@@ -1,7 +1,7 @@
 # TCG_project
-### Trading Card Game backend app
+### Trading Card Game backend API
 
-A backend app that manages users, decks and cards, based on a traditional trading card game structure
+A backend API that manages users, decks and cards, based on a traditional trading card game structure
 
 ### Proyect Structure
 
