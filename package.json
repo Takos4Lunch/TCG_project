@@ -29,6 +29,7 @@
     "sinon": "^15.2.0"
   },
   "devDependencies": {
+    "docker-compose": "^0.24.2",
     "jest": "^29.6.2",
     "supertest": "^6.3.3"
   }

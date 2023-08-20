@@ -66,7 +66,7 @@ describe('UserService tests', () => {
 
     test('should fail (no id or changes provided)', async () => {
         const result = await service.update()
-        expect(result).toStrictEqual(boom.badRequest('error handled properly'));
+        expect(result).toStrictEqual(boom.badRequest('ID not provided'));
     })
 
     test('should return changes made', async () => {
