@@ -65,17 +65,19 @@ async (req, res, next) => {
         
         ////////////////////////////////           user ID      deck ID
         const deck = await service.findOneByUser(req.user.sub,req.params.id);
-        console.log(deck);
-        console.log('deck arriba')
-        const cardinsert = req.body.cards;
-        cardinsert.forEach(async card => {
-            const cardInst = await cInstService.findOneAssoc(card,req.user.sub); //Has to be a card instance that the user owns
-            cardInst.DeckId = deck.id;
-            deck.currentCards = deck.currentCards+1;
-            deck.save();
-            cardInst.save();
-        });
-        res.json(cardinsert);
+        if(deck==null){
+            res.json("Deck not found");
+        }else{
+            const cardinsert = req.body.cards;
+            cardinsert.forEach(async card => {
+                const cardInst = await cInstService.findOneAssoc(card,req.user.sub); //Has to be a card instance that the user owns
+                cardInst.DeckId = deck.id;
+                deck.currentCards = deck.currentCards+1;
+                deck.save();
+                cardInst.save();
+            });
+            res.json(cardinsert);
+        }
     } catch (error) {
         next(error)
     }

@@ -12,10 +12,14 @@ const cInstService = new cardInstanceService();
 const service = new cardService()
 
 router.get('/', 
-passport.authenticate('jwt', {session: false}), checkRoles('admin') ,
+passport.authenticate('jwt', {session: false}), checkRoles('admin','user') ,
 async (req, res, next) => {
     try {
-        const cards = await service.find();
+        /**
+         * If admin, returns all cards
+         * If user, returns cards in collection
+         */
+        const cards = (req.user.role=='user') ? await cInstService.findAllByUser(req.user.sub) : await service.find();
         res.json(cards)
     } catch (error) {
         next(error);
